@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -15,11 +14,30 @@ public static class Winnings
             Mathf.Approximately(gameRoundData.TotalWinnings, numberOfIncrements * winningIncrement),
             "Inconsitent total winnings");
 
-        //TODO: divide number of increments across some number of chests < total number of chests-1
+        //TODO: Update the code below vary the win amounts across the chests
+        int largestDivisor = LargestIntegerDivisorInRange(numberOfIncrements, 1, GameRoundData.numberOfChests - 1);
+        float winningsPerChest = numberOfIncrements / largestDivisor;
 
-        // for (int i = 0; i < GameRoundData.numberOfChests; i++)
-        // {
-        //     gameRoundData.WinAmounts.Add(winningsPerChest);
-        // }
+        Assert.IsTrue(
+            Mathf.Approximately(gameRoundData.TotalWinnings, winningsPerChest * largestDivisor),
+            "Inconsistent total winnings");
+
+        for (int i = 0; i < largestDivisor; i++)
+        {
+            gameRoundData.WinAmounts.Add(winningsPerChest);
+        }
+    }
+
+    static int LargestIntegerDivisorInRange(int numerator, int lowerLimit, int upperLimit)
+    {
+        for (int i = upperLimit; i >= lowerLimit; i--)
+        {
+            if (numerator % i == 0)
+            {
+                return i;
+            }
+        }
+
+        throw new ArgumentException("No divisor found in the given range");
     }
 }
