@@ -17,7 +17,7 @@ public class DenominationButton : MonoBehaviour
 
     void OnClick()
     {
-        controller.UpdateDisplay(buttonType == ButtonType.Increase);
+        controller.ChangeDenomination(buttonType == ButtonType.Increase);
     }
 
 }

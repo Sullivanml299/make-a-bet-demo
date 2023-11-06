@@ -16,12 +16,15 @@ public class DenominationController : MonoBehaviour, IGameStateObserver
         GameManager.Instance.RegisterObserver(this);
         UpdateText();
         UpdateButtons();
+        GameplayController.Instance.SetBetAmount(denominations[currentIndex]);
     }
-    public void UpdateDisplay(bool increase)
+
+    public void ChangeDenomination(bool increase)
     {
         if (increase && currentIndex < denominations.Length - 1) currentIndex++;
         else if (!increase && currentIndex > 0) currentIndex--;
         UpdateText();
+        GameplayController.Instance.SetBetAmount(denominations[currentIndex]);
     }
 
     public void OnGameStateChange(GameState newState)
