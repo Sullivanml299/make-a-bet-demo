@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameplayController : MonoBehaviour, IGameStateObserver
 {
     public static GameplayController Instance { get; private set; }
-    private GameRoundData gameRoundData;
+    private GameRoundData gameRoundData = new GameRoundData();
 
     void Awake()
     {
@@ -15,8 +16,14 @@ public class GameplayController : MonoBehaviour, IGameStateObserver
 
     void Start()
     {
-        gameRoundData = new GameRoundData();
-        GameManager.Instance.RegisterObserver(this);
+        GameStateManager.Instance.RegisterObserver(this);
+    }
+
+    public void SelectChest(TreasureChest chest)
+    {
+        //TODO: add logic to disable selection while a chest is opening
+        // Debug.Log("Chest Selected: " + chest.name);
+        chest.Open(null);
     }
 
     public void SetBetAmount(float amount)

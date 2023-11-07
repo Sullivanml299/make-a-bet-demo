@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameStateManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
+    public static GameStateManager Instance { get; private set; }
     public bool debugPrint = false;
     private GameState gameState = GameState.Setup;
     private List<IGameStateObserver> observers = new List<IGameStateObserver>();

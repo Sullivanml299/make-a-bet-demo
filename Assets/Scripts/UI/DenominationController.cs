@@ -13,7 +13,7 @@ public class DenominationController : MonoBehaviour, IGameStateObserver
 
     void Start()
     {
-        GameManager.Instance.RegisterObserver(this);
+        GameStateManager.Instance.RegisterObserver(this);
         UpdateText();
         UpdateButtons();
         GameplayController.Instance.SetBetAmount(denominations[currentIndex]);

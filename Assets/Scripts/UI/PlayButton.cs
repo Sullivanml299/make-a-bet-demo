@@ -13,13 +13,13 @@ public class PlayButton : MonoBehaviour, IGameStateObserver
 
     void Start()
     {
-        GameManager.Instance.RegisterObserver(this);
+        GameStateManager.Instance.RegisterObserver(this);
         button = GetComponent<Button>();
         button.onClick.AddListener(OnClick);
     }
 
     void OnClick()
     {
-        GameManager.Instance.ChangeGameState(GameState.Playing);
+        GameStateManager.Instance.ChangeGameState(GameState.Playing);
     }
 }
