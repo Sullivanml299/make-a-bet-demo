@@ -25,7 +25,10 @@ public class GameplayController : MonoBehaviour, IGameStateObserver
         if (!canSelectChest) return;
         canSelectChest = false;
         // Debug.Log("Chest Selected: " + chest.name);
-        chest.Open(null);
+        Debug.Log(gameRoundData.WinAmounts.Count);
+        if (gameRoundData.WinAmounts.Count == 0) chest.SetValue(0);
+        else chest.SetValue(gameRoundData.WinAmounts.Dequeue());
+        chest.Open();
     }
 
     public void EndOpen()
@@ -72,8 +75,7 @@ public class GameRoundData
     public float BetAmount { get; set; }
     public int RoundMultiplier { get; set; }
     public float TotalWinnings { get; set; }
-    //TODO: switch to queue
-    public List<float> WinAmounts { get; } = new List<float>(numberOfChests);
+    public Queue<float> WinAmounts { get; } = new Queue<float>();
 
     //TODO: add reset function to clear list of win amounts
 
@@ -89,4 +91,5 @@ public class GameRoundData
         }
         return output;
     }
+
 }

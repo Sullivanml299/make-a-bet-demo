@@ -11,10 +11,11 @@ public class TreasureChest : MonoBehaviour, IGameStateObserver
     public float scaleMultiplier = 2f;
     public bool modelZIsUp = true;
     public bool modelOriginIsBottom = true;
+    private Reward reward;
     private Animator animator;
     private Vector3 startPosition, startScale;
-    float verticalOffset;
-    bool isOpen = false;
+    private float verticalOffset;
+    private bool isOpen = false;
 
     void Start()
     {
@@ -28,6 +29,7 @@ public class TreasureChest : MonoBehaviour, IGameStateObserver
                             : -GetComponent<MeshCollider>().bounds.extents.y * transform.localScale.y;
         }
         animator = GetComponentInChildren<Animator>();
+        reward = GetComponentInChildren<Reward>();
     }
 
     public void OnGameStateChange(GameState newState)
@@ -35,21 +37,27 @@ public class TreasureChest : MonoBehaviour, IGameStateObserver
         if (isOpen && newState == GameState.Playing)
         {
             isOpen = false;
+            reward.SetVisible(false);
             animator.SetTrigger("Close");
         }
     }
 
-    public void Open(GameObject contents)
+    public void SetValue(float value)
+    {
+        reward.SetReward(value);
+    }
+
+    public void Open()
     {
         if (isOpen) return;
         isOpen = true;
-        Debug.Log("Chest Opened: " + name);
         StartCoroutine(AnimationSetup());
     }
 
     public void EndOpen()
     {
         StartCoroutine(AnimationCleanup());
+        reward.SetVisible(true);
     }
 
     IEnumerator AnimationSetup()

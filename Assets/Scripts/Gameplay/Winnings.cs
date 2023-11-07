@@ -10,6 +10,7 @@ public static class Winnings
     public static void SplitWinnings(GameRoundData gameRoundData)
     {
         int numberOfIncrements = Mathf.FloorToInt(gameRoundData.TotalWinnings / minimumIncrement);
+        if (numberOfIncrements == 0) return;
 
         Assert.IsTrue(
             Mathf.Approximately(gameRoundData.TotalWinnings, numberOfIncrements * minimumIncrement),
@@ -27,7 +28,7 @@ public static class Winnings
 
         for (int i = 0; i < largestDivisor; i++)
         {
-            gameRoundData.WinAmounts.Add(winningsPerChest);
+            gameRoundData.WinAmounts.Enqueue(winningsPerChest);
         }
     }
 
