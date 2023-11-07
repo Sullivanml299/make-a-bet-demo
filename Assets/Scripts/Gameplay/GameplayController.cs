@@ -22,6 +22,7 @@ public class GameplayController : MonoBehaviour, IGameStateObserver
 
     public void SelectChest(TreasureChest chest)
     {
+        if (!canSelectChest) return;
         canSelectChest = false;
         // Debug.Log("Chest Selected: " + chest.name);
         chest.Open(null);
