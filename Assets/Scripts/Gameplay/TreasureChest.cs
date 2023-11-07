@@ -34,7 +34,6 @@ public class TreasureChest : MonoBehaviour, IGameStateObserver
     {
         if (isOpen && newState == GameState.Playing)
         {
-            Debug.Log("Chest Closed: " + name);
             isOpen = false;
             animator.SetTrigger("Close");
         }
@@ -43,7 +42,7 @@ public class TreasureChest : MonoBehaviour, IGameStateObserver
     public void Open(GameObject contents)
     {
         if (isOpen) return;
-        isOpen = true; //TODO: remove once animatin event is added
+        isOpen = true;
         Debug.Log("Chest Opened: " + name);
         StartCoroutine(AnimationSetup());
     }
@@ -52,8 +51,6 @@ public class TreasureChest : MonoBehaviour, IGameStateObserver
     {
         StartCoroutine(AnimationCleanup());
     }
-
-    //TODO: add animation event that tells the GameplayController a chest is done opening
 
     IEnumerator AnimationSetup()
     {
