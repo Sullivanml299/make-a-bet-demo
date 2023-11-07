@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TreasureChestAnimationEvents : MonoBehaviour
 {
-    public TreasureChest chest;
+    TreasureChest chest;
 
     void Start()
     {

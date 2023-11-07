@@ -6,6 +6,7 @@ public class TreasureChest : MonoBehaviour, IGameStateObserver
 {
     public float moveTime = 0.2f;
     public float postAnimationWaitTime = 1f;
+    public float preAnimationWaitTime = 0.5f;
     public float animationDistanceFromCamera = 1.5f;
     public float scaleMultiplier = 2f;
     public bool modelZIsUp = true;
@@ -17,6 +18,7 @@ public class TreasureChest : MonoBehaviour, IGameStateObserver
 
     void Start()
     {
+        GameStateManager.Instance.RegisterObserver(this);
         startPosition = transform.position;
         startScale = transform.localScale;
         if (modelOriginIsBottom)
@@ -30,10 +32,11 @@ public class TreasureChest : MonoBehaviour, IGameStateObserver
 
     public void OnGameStateChange(GameState newState)
     {
-        if (newState == GameState.Playing)
+        if (isOpen && newState == GameState.Playing)
         {
+            Debug.Log("Chest Closed: " + name);
             isOpen = false;
-            //TODO: trigger animation
+            animator.SetTrigger("Close");
         }
     }
 
@@ -66,6 +69,13 @@ public class TreasureChest : MonoBehaviour, IGameStateObserver
             time += Time.deltaTime;
             transform.position = Vector3.Lerp(startPosition, targetPosition, time / moveTime);
             transform.localScale = Vector3.Lerp(startScale, targetScale, time / moveTime);
+            yield return null;
+        }
+
+        time = 0f;
+        while (time < preAnimationWaitTime)
+        {
+            time += Time.deltaTime;
             yield return null;
         }
 
