@@ -7,6 +7,7 @@ public class GameplayController : MonoBehaviour, IGameStateObserver
 {
     public static GameplayController Instance { get; private set; }
     private GameRoundData gameRoundData = new GameRoundData();
+    private bool canSelectChest = true;
 
     void Awake()
     {
@@ -22,6 +23,7 @@ public class GameplayController : MonoBehaviour, IGameStateObserver
     public void SelectChest(TreasureChest chest)
     {
         //TODO: add logic to disable selection while a chest is opening
+        canSelectChest = false;
         // Debug.Log("Chest Selected: " + chest.name);
         chest.Open(null);
     }
@@ -65,6 +67,7 @@ public class GameRoundData
     public float BetAmount { get; set; }
     public int RoundMultiplier { get; set; }
     public float TotalWinnings { get; set; }
+    //TODO: switch to queue
     public List<float> WinAmounts { get; } = new List<float>(numberOfChests);
 
     //TODO: add reset function to clear list of win amounts
