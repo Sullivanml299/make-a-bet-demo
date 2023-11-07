@@ -22,10 +22,14 @@ public class GameplayController : MonoBehaviour, IGameStateObserver
 
     public void SelectChest(TreasureChest chest)
     {
-        //TODO: add logic to disable selection while a chest is opening
         canSelectChest = false;
         // Debug.Log("Chest Selected: " + chest.name);
         chest.Open(null);
+    }
+
+    public void EndOpen()
+    {
+        canSelectChest = true;
     }
 
     public void SetBetAmount(float amount)
