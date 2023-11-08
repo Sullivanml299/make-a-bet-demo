@@ -1,9 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TreasureChest : MonoBehaviour, IGameStateObserver
 {
+    //FIXME: programmatically set spacing to work with common aspect ratios
     public float moveTime = 0.2f;
     public float postAnimationWaitTime = 1f;
     public float preAnimationWaitTime = 0.5f;

@@ -20,7 +20,7 @@ public static class Winnings
         int largestDivisor = LargestIntegerDivisorInRange(numberOfIncrements, 1, GameRoundData.numberOfChests - 1);
         float winningsPerChest = numberOfIncrements / largestDivisor * minimumIncrement;
         Debug.Log("largest Divisor: " + largestDivisor);
-        Debug.Log("Winnings per Chest: " + numberOfIncrements);
+        Debug.Log("Winning Increments per Chest: " + numberOfIncrements);
         Debug.Log("Total winnings: " + gameRoundData.TotalWinnings);
         Assert.IsTrue(
             Mathf.Approximately(gameRoundData.TotalWinnings, winningsPerChest * largestDivisor),

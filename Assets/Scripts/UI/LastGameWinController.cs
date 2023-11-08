@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class LastGameWinController : MonoBehaviour, IGameStateObserver
+public class LastGameWinController : MonoBehaviour
 {
-    public TextMeshProUGUI displayText;
+    [SerializeField]
+    private TextMeshProUGUI displayText;
     float currentWinnings = 0;
 
     // Start is called before the first frame update
@@ -14,18 +15,13 @@ public class LastGameWinController : MonoBehaviour, IGameStateObserver
         Reset();
     }
 
-    public void OnGameStateChange(GameState newState)
-    {
-        if (newState == GameState.Playing) Reset();
-    }
-
     public void UpdateWinnings(float winnings)
     {
         currentWinnings += winnings;
         displayText.text = currentWinnings.ToString("C2");
     }
 
-    void Reset()
+    public void Reset()
     {
         currentWinnings = 0;
         displayText.text = currentWinnings.ToString("C2");

@@ -1,13 +1,16 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameplayController : MonoBehaviour, IGameStateObserver
 {
     public static GameplayController Instance { get; private set; }
+    [SerializeField] private LastGameWinController lastGameWinController;
+    [SerializeField] private PlayerBankController playerBankController;
+    [SerializeField] private DenominationController denominationController;
+    [SerializeField] private PlayButton playButton;
     private GameRoundData gameRoundData = new GameRoundData();
     private bool canSelectChest = false;
+    private float currentWinAmount;
     private bool endRound = false;
 
     void Awake()
@@ -21,50 +24,68 @@ public class GameplayController : MonoBehaviour, IGameStateObserver
         GameStateManager.Instance.RegisterObserver(this);
     }
 
-    public void SelectChest(TreasureChest chest)
-    {
-        if (!canSelectChest) return;
-        canSelectChest = false;
-        if (gameRoundData.WinAmounts.Count == 0)
-        {
-            chest.SetValue(0);
-            endRound = true;
-        }
-        else chest.SetValue(gameRoundData.WinAmounts.Dequeue());
-        chest.Open();
-    }
-
-    public void EndOpen()
-    {
-        canSelectChest = true;
-        if (endRound) EndRound();
-    }
-
-    public void SetBetAmount(float amount)
-    {
-        gameRoundData.BetAmount = amount;
-    }
-
     public void OnGameStateChange(GameState newState)
     {
         switch (newState)
         {
             case GameState.Setup:
+                SetupRound();
                 break;
 
             case GameState.Playing:
                 StartRound();
                 break;
-
-            case GameState.PostGame:
-                break;
         }
+    }
+
+    public void SetBetAmount(float amount)
+    {
+        gameRoundData.BetAmount = amount;
+        playButton.SetInteractable(amount <= playerBankController.CurrentBalance);
+    }
+
+    public void SelectChest(TreasureChest chest)
+    {
+        if (!canSelectChest) return;
+        canSelectChest = false;
+        SetCurrentWinAmount();
+        chest.SetValue(currentWinAmount);
+        chest.Open();
+    }
+
+    private void SetCurrentWinAmount()
+    {
+        if (gameRoundData.WinAmounts.Count == 0)
+        {
+            currentWinAmount = 0;
+            endRound = true;
+        }
+        else currentWinAmount = gameRoundData.WinAmounts.Dequeue();
+    }
+
+    public void EndOpen()
+    {
+        lastGameWinController.UpdateWinnings(currentWinAmount);
+        if (endRound) EndRound();
+        else canSelectChest = true;
+    }
+
+    private void SetupRound()
+    {
+        canSelectChest = false;
+        denominationController.SetInteractable(true);
+        playButton.SetInteractable(gameRoundData.BetAmount <= playerBankController.CurrentBalance);
     }
 
     private void StartRound()
     {
         endRound = false;
         canSelectChest = true;
+        playButton.SetInteractable(false);
+        denominationController.SetInteractable(true);
+        lastGameWinController.Reset();
+
+        playerBankController.UpdateBalance(-gameRoundData.BetAmount);
         gameRoundData.RoundMultiplier = Multiplier.GetRandomMultplier();
         gameRoundData.TotalWinnings = gameRoundData.RoundMultiplier * gameRoundData.BetAmount;
         Winnings.SplitWinnings(gameRoundData);
@@ -73,9 +94,9 @@ public class GameplayController : MonoBehaviour, IGameStateObserver
 
     private void EndRound()
     {
-        GameStateManager.Instance.ChangeGameState(GameState.PostGame);
-        //TODO: add animation to show winnings filling your bank (current balance)
         GameStateManager.Instance.ChangeGameState(GameState.Setup);
+        playerBankController.UpdateBalance(gameRoundData.TotalWinnings);
+        //TODO: add animation to show winnings filling your bank (current balance)
     }
 }
 
@@ -83,12 +104,10 @@ public class GameplayController : MonoBehaviour, IGameStateObserver
 public class GameRoundData
 {
     public static readonly int numberOfChests = 9;
-    public float BetAmount { get; set; }
+    public float BetAmount { get; set; } = 0;
     public int RoundMultiplier { get; set; }
     public float TotalWinnings { get; set; }
     public Queue<float> WinAmounts { get; } = new Queue<float>();
-
-    //TODO: add reset function to clear list of win amounts
 
     public override string ToString()
     {

@@ -7,7 +7,7 @@ public class GameStateManager : MonoBehaviour
     public static GameStateManager Instance { get; private set; }
     public bool debugPrint = false;
     private GameState gameState = GameState.Setup;
-    private List<IGameStateObserver> observers = new List<IGameStateObserver>();
+    private HashSet<IGameStateObserver> observers = new HashSet<IGameStateObserver>();
 
     void Awake()
     {
@@ -17,22 +17,12 @@ public class GameStateManager : MonoBehaviour
 
     public void RegisterObserver(IGameStateObserver observer)
     {
-        if (debugPrint) Debug.Log("Registering observer: " + observer.ToString());
         observers.Add(observer);
     }
 
     public void UnregisterObserver(IGameStateObserver observer)
     {
-        if (debugPrint) Debug.Log("Unregistering observer: " + observer.ToString());
         observers.Remove(observer);
-    }
-
-    private void NotifyObservers()
-    {
-        foreach (var observer in observers)
-        {
-            observer.OnGameStateChange(gameState);
-        }
     }
 
     public void ChangeGameState(GameState newState)
@@ -41,11 +31,16 @@ public class GameStateManager : MonoBehaviour
         gameState = newState;
         NotifyObservers();
     }
+    private void NotifyObservers()
+    {
+        foreach (IGameStateObserver observer in observers) observer.OnGameStateChange(gameState);
+    }
+
+
 }
 
 public enum GameState
 {
     Setup,
     Playing,
-    PostGame
 }

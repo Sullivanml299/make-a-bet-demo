@@ -1,22 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DenominationController : MonoBehaviour, IGameStateObserver
+public class DenominationController : MonoBehaviour
 {
-    public TextMeshProUGUI displayText;
-    public Button increaseButton, decreaseButton;
+    [SerializeField]
+    private TextMeshProUGUI displayText;
+    [SerializeField]
+    private Button increaseButton, decreaseButton;
     private float[] denominations = new float[] { 0.25f, 0.50f, 1.00f, 5.00f };
     private int currentIndex = 0;
 
     void Start()
     {
-        GameStateManager.Instance.RegisterObserver(this);
         UpdateText();
         UpdateButtons();
         GameplayController.Instance.SetBetAmount(denominations[currentIndex]);
+    }
+
+    public void SetInteractable(bool IsInteractable)
+    {
+        if (IsInteractable) UpdateButtons();
+        else
+        {
+            increaseButton.interactable = false;
+            decreaseButton.interactable = false;
+        }
     }
 
     public void ChangeDenomination(bool increase)
@@ -26,15 +35,10 @@ public class DenominationController : MonoBehaviour, IGameStateObserver
         UpdateText();
         GameplayController.Instance.SetBetAmount(denominations[currentIndex]);
     }
-
-    public void OnGameStateChange(GameState newState)
+    private void UpdateButtons()
     {
-        if (newState != GameState.Setup)
-        {
-            increaseButton.interactable = false;
-            decreaseButton.interactable = false;
-        }
-        else UpdateButtons();
+        increaseButton.interactable = IsInteractable(true);
+        decreaseButton.interactable = IsInteractable(false);
     }
 
     private void UpdateText()
@@ -42,13 +46,6 @@ public class DenominationController : MonoBehaviour, IGameStateObserver
         displayText.text = denominations[currentIndex].ToString("C2");
         UpdateButtons();
     }
-
-    private void UpdateButtons()
-    {
-        increaseButton.interactable = IsInteractable(true);
-        decreaseButton.interactable = IsInteractable(false);
-    }
-
 
     private bool IsInteractable(bool increase)
     {

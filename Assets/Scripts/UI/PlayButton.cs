@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayButton : MonoBehaviour, IGameStateObserver
+public class PlayButton : MonoBehaviour
 {
-    public Button button;
-    public void OnGameStateChange(GameState newState)
-    {
-        button.interactable = newState == GameState.Setup;
-    }
+    [SerializeField] private Button button;
 
     void Start()
     {
-        GameStateManager.Instance.RegisterObserver(this);
         button = GetComponent<Button>();
         button.onClick.AddListener(OnClick);
+    }
+
+    public void SetInteractable(bool value)
+    {
+        button.interactable = value;
     }
 
     void OnClick()
