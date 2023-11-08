@@ -7,7 +7,8 @@ public class GameplayController : MonoBehaviour, IGameStateObserver
 {
     public static GameplayController Instance { get; private set; }
     private GameRoundData gameRoundData = new GameRoundData();
-    private bool canSelectChest = true;
+    private bool canSelectChest = false;
+    private bool endRound = false;
 
     void Awake()
     {
@@ -24,9 +25,11 @@ public class GameplayController : MonoBehaviour, IGameStateObserver
     {
         if (!canSelectChest) return;
         canSelectChest = false;
-        // Debug.Log("Chest Selected: " + chest.name);
-        Debug.Log(gameRoundData.WinAmounts.Count);
-        if (gameRoundData.WinAmounts.Count == 0) chest.SetValue(0);
+        if (gameRoundData.WinAmounts.Count == 0)
+        {
+            chest.SetValue(0);
+            endRound = true;
+        }
         else chest.SetValue(gameRoundData.WinAmounts.Dequeue());
         chest.Open();
     }
@@ -34,6 +37,7 @@ public class GameplayController : MonoBehaviour, IGameStateObserver
     public void EndOpen()
     {
         canSelectChest = true;
+        if (endRound) EndRound();
     }
 
     public void SetBetAmount(float amount)
@@ -57,15 +61,22 @@ public class GameplayController : MonoBehaviour, IGameStateObserver
         }
     }
 
-    public void StartRound()
+    private void StartRound()
     {
+        endRound = false;
+        canSelectChest = true;
         gameRoundData.RoundMultiplier = Multiplier.GetRandomMultplier();
         gameRoundData.TotalWinnings = gameRoundData.RoundMultiplier * gameRoundData.BetAmount;
         Winnings.SplitWinnings(gameRoundData);
         Debug.Log(gameRoundData);
     }
 
-
+    private void EndRound()
+    {
+        GameStateManager.Instance.ChangeGameState(GameState.PostGame);
+        //TODO: add animation to show winnings filling your bank (current balance)
+        GameStateManager.Instance.ChangeGameState(GameState.Setup);
+    }
 }
 
 //TODO: move to its own file
