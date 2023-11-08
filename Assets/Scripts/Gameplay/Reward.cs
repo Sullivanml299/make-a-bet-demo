@@ -1,18 +1,22 @@
 using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using UnityEngine.VFX;
 
 public class Reward : MonoBehaviour
 {
     //FIXME: rework how I set the reward type
     public GameObject Gold, Silver, Copper, Pooper;
     public RewardType rewardType { get; private set; }
+    [SerializeField]
+    private TextMeshPro rewardText;
 
     private GameObject currentReward;
+    private float rewardValue;
 
     public void SetReward(float value)
     {
+        rewardValue = value;
+        rewardText.text = value.ToString("C2");
         if (value >= 100) SetRewardType(RewardType.Gold);
         else if (value >= 10) SetRewardType(RewardType.Silver);
         else if (value > 0) SetRewardType(RewardType.Copper);
@@ -21,7 +25,11 @@ public class Reward : MonoBehaviour
 
     public void SetVisible(bool visible)
     {
-        if (currentReward != null) currentReward.SetActive(visible);
+        if (currentReward != null)
+        {
+            currentReward.SetActive(visible);
+            rewardText.gameObject.SetActive(visible);
+        }
     }
 
     private void SetRewardType(RewardType type)

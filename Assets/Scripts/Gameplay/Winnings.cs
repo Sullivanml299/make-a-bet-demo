@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -17,6 +17,35 @@ public static class Winnings
             "Invalid Number of Increments: Inconsitent total winnings");
 
         //TODO: Update the code below vary the win amounts across the chests
+        // EvenSplit(numberOfIncrements, gameRoundData);
+        RandomSplit(numberOfIncrements, gameRoundData);
+    }
+
+    //TODO: Scales poorly. Just a placeholder for testing purposes.
+    static void RandomSplit(int numberOfIncrements, GameRoundData gameRoundData)
+    {
+        int numberOfChests = Random.Range(1, GameRoundData.numberOfChests + 1);
+        int incrementsRemaining = numberOfIncrements;
+        int incrementsInChest;
+        List<float> winAmounts = new List<float>();
+
+        for (int i = 0; i < numberOfChests - 1; i++)
+        {
+            incrementsInChest = Random.Range(0, incrementsRemaining);
+            incrementsRemaining -= incrementsInChest;
+            winAmounts.Add(incrementsInChest * minimumIncrement);
+        }
+        winAmounts.Add(incrementsRemaining * minimumIncrement);
+        winAmounts.Sort();
+
+        foreach (var winAmount in winAmounts)
+        {
+            gameRoundData.WinAmounts.Enqueue(winAmount);
+        }
+    }
+
+    static void EvenSplit(int numberOfIncrements, GameRoundData gameRoundData)
+    {
         int largestDivisor = LargestIntegerDivisorInRange(numberOfIncrements, 1, GameRoundData.numberOfChests - 1);
         float winningsPerChest = numberOfIncrements / largestDivisor * minimumIncrement;
         Debug.Log("largest Divisor: " + largestDivisor);
@@ -30,6 +59,7 @@ public static class Winnings
         {
             gameRoundData.WinAmounts.Enqueue(winningsPerChest);
         }
+
     }
 
     static int LargestIntegerDivisorInRange(int numerator, int lowerLimit, int upperLimit)
@@ -45,6 +75,6 @@ public static class Winnings
             }
         }
 
-        throw new ArgumentException("No divisor found in the given range");
+        throw new System.ArgumentException("No divisor found in the given range");
     }
 }
