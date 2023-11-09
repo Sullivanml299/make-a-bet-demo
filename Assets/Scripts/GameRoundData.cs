@@ -6,7 +6,7 @@ public class GameRoundData
     public float BetAmount { get; set; } = 0;
     public int RoundMultiplier { get; set; }
     public float TotalWinnings { get; set; }
-    public Queue<float> WinAmounts { get; } = new Queue<float>();
+    public Queue<float> WinningsQueue { get; } = new Queue<float>();
 
     public override string ToString()
     {
@@ -14,7 +14,7 @@ public class GameRoundData
         output += "Round Multiplier: " + RoundMultiplier + "\n";
         output += "Total Winnings: " + TotalWinnings + "\n";
         output += "Win Amounts: ";
-        foreach (var winAmount in WinAmounts)
+        foreach (var winAmount in WinningsQueue)
         {
             output += winAmount + ", ";
         }

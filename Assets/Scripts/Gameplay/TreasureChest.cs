@@ -15,7 +15,7 @@ public class TreasureChest : MonoBehaviour, IGameStateObserver
     private Animator animator;
     private Vector3 startPosition, startScale;
     private float verticalOffset;
-    private bool isOpen = false;
+    public bool isOpen { get; private set; } = false;
 
     void Start()
     {

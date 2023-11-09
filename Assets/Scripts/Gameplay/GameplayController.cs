@@ -46,7 +46,7 @@ public class GameplayController : MonoBehaviour, IGameStateObserver
 
     public void SelectChest(TreasureChest chest)
     {
-        if (!canSelectChest) return;
+        if (!canSelectChest || chest.isOpen) return;
         canSelectChest = false;
         SetCurrentWinAmount();
         chest.SetValue(currentWinAmount);
@@ -55,12 +55,12 @@ public class GameplayController : MonoBehaviour, IGameStateObserver
 
     private void SetCurrentWinAmount()
     {
-        if (gameRoundData.WinAmounts.Count == 0)
+        if (gameRoundData.WinningsQueue.Count == 0)
         {
             currentWinAmount = 0;
             endRound = true;
         }
-        else currentWinAmount = gameRoundData.WinAmounts.Dequeue();
+        else currentWinAmount = gameRoundData.WinningsQueue.Dequeue();
     }
 
     public void EndOpen()
@@ -82,7 +82,7 @@ public class GameplayController : MonoBehaviour, IGameStateObserver
         endRound = false;
         canSelectChest = true;
         playButton.SetInteractable(false);
-        denominationController.SetInteractable(true);
+        denominationController.SetInteractable(false);
         lastGameWinController.Reset();
 
         playerBankController.UpdateBalance(-gameRoundData.BetAmount);
