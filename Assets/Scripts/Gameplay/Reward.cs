@@ -5,13 +5,24 @@ using UnityEngine;
 public class Reward : MonoBehaviour
 {
     //FIXME: rework how I set the reward type
+    public float rotationTime = 1f;
     public GameObject Gold, Silver, Copper, Pooper;
     public RewardType rewardType { get; private set; }
     [SerializeField]
     private TextMeshPro rewardText;
-
     private GameObject currentReward;
     private float rewardValue;
+    private bool visible = false;
+    private float rotationSpeed => 360 / rotationTime;
+
+
+    void Update()
+    {
+        if (visible)
+        {
+            transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
+        }
+    }
 
     public void SetReward(float value)
     {
@@ -25,11 +36,13 @@ public class Reward : MonoBehaviour
 
     public void SetVisible(bool visible)
     {
+        this.visible = visible;
         if (currentReward != null)
         {
             currentReward.SetActive(visible);
             rewardText.gameObject.SetActive(visible);
         }
+        if (!visible) transform.rotation = Quaternion.identity;
     }
 
     private void SetRewardType(RewardType type)
