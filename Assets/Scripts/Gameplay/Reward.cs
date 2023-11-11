@@ -5,7 +5,7 @@ using UnityEngine;
 public class Reward : MonoBehaviour
 {
     //FIXME: rework how I set the reward type
-    public float rotationTime = 1f;
+    public float rotationTime = 10f;
     public GameObject Gold, Silver, Copper, Pooper;
     public RewardType rewardType { get; private set; }
     [SerializeField]
@@ -20,6 +20,7 @@ public class Reward : MonoBehaviour
     {
         if (visible)
         {
+            //FIXME: this rotates the text too
             transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
         }
     }
