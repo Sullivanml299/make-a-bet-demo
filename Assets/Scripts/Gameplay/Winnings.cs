@@ -37,6 +37,7 @@ public static class Winnings
             "Invalid Number of Increments: Inconsitent total winnings");
     }
 
+    //TODO: improve efficiency
     static int[] GetRandomPartition(int T, int n)
     {
         if (n == 1) return new int[] { T };
@@ -75,53 +76,9 @@ public static class Winnings
 
         System.Array.Sort(result);
 
-        Debug.Log($"Random ascending partition of {T} into {n} values: [{string.Join(", ", result)}] partition: [{string.Join(", ", partitionList)}]");
-
+        // Debug.Log($"Random ascending partition of {T} into {n} values: [{string.Join(", ", result)}] partition: [{string.Join(", ", partitionList)}]");
         return result;
     }
-
-    //TODO: Come back to this. Average time is far more efficient, but worst case could technically be infinite
-    //Worst case is when t is very big and n = t
-
-    // static int[] GetRandomPartition(int T, int n)
-    // {
-    //     if (n == 1) return new int[] { T };
-    //     if (n > T)
-    //     {
-    //         n = T;
-    //         Debug.LogWarning("Number of partitions is greater than total value. Setting number of partitions to total value.");
-    //     }
-
-    //     Debug.Log($"Random ascending partition of {T} into {n}");
-    //     HashSet<int> partitionSet = new HashSet<int>();
-    //     List<int> partitionList;
-
-    //     while (partitionSet.Count < n - 1)
-    //     {
-    //         partitionSet.Add(Random.Range(1, T));
-    //     }
-
-    //     // Take the first n - 1 numbers as the split points
-    //     partitionList = partitionSet.ToList();
-
-    //     // Sort the split points in ascending order
-    //     partitionList.Sort();
-
-    //     // Calculate the differences between consecutive split points
-    //     int[] result = new int[n];
-    //     result[0] = partitionList[0];
-    //     for (int i = 1; i < n - 1; i++)
-    //     {
-    //         result[i] = partitionList[i] - partitionList[i - 1];
-    //     }
-    //     result[n - 1] = T - partitionList[n - 2];
-
-    //     System.Array.Sort(result);
-
-    //     Debug.Log($"Random ascending partition of {T} into {n} values: [{string.Join(", ", result)}] partition: [{string.Join(", ", partitionList)}]");
-
-    //     return result;
-    // }
 
     static void EvenSplit(int numberOfIncrements, int chestsAvailable, Queue<float> winningsQueue)
     {
