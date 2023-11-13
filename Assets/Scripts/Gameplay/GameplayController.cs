@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class GameplayController : MonoBehaviour, IGameStateObserver
 {
@@ -8,10 +9,13 @@ public class GameplayController : MonoBehaviour, IGameStateObserver
     [SerializeField] private PlayerBankController playerBankController;
     [SerializeField] private DenominationController denominationController;
     [SerializeField] private PlayButton playButton;
+    [SerializeField] private CoinDropController coinDropController;
     private GameRoundData gameRoundData = new GameRoundData();
     private bool canSelectChest = false;
     private float currentWinAmount;
     private bool endRound = false;
+    private List<TreasureChest> openChests = new List<TreasureChest>();
+    private TreasureChest blackHoleChest;
 
     void Awake()
     {
@@ -44,13 +48,22 @@ public class GameplayController : MonoBehaviour, IGameStateObserver
         playButton.SetInteractable(amount <= playerBankController.CurrentBalance);
     }
 
-    public void SelectChest(TreasureChest chest)
+    public void OpenChest(TreasureChest chest)
     {
         if (!canSelectChest || chest.isOpen) return;
         canSelectChest = false;
         SetCurrentWinAmount();
         chest.SetValue(currentWinAmount);
         chest.Open();
+        if (endRound) blackHoleChest = chest;
+        else openChests.Add(chest);
+    }
+
+    public void EndOpen()
+    {
+        lastGameWinController.UpdateWinnings(currentWinAmount);
+        if (endRound) EndRound();
+        else canSelectChest = true;
     }
 
     private void SetCurrentWinAmount()
@@ -61,13 +74,6 @@ public class GameplayController : MonoBehaviour, IGameStateObserver
             endRound = true;
         }
         else currentWinAmount = gameRoundData.WinningsQueue.Dequeue();
-    }
-
-    public void EndOpen()
-    {
-        lastGameWinController.UpdateWinnings(currentWinAmount);
-        if (endRound) EndRound();
-        else canSelectChest = true;
     }
 
     private void SetupRound()
@@ -84,6 +90,7 @@ public class GameplayController : MonoBehaviour, IGameStateObserver
         playButton.SetInteractable(false);
         denominationController.SetInteractable(false);
         lastGameWinController.Reset();
+        openChests.Clear();
 
         playerBankController.UpdateBalance(-gameRoundData.BetAmount);
         gameRoundData.RoundMultiplier = Multiplier.GetRandomMultplier();
@@ -94,8 +101,14 @@ public class GameplayController : MonoBehaviour, IGameStateObserver
 
     private void EndRound()
     {
-        GameStateManager.Instance.ChangeGameState(GameState.Setup);
-        playerBankController.UpdateBalance(gameRoundData.TotalWinnings);
-        //TODO: add animation to show winnings filling your bank (current balance)
+        blackHoleChest.TriggerBlackHole(openChests);
+        // playerBankController.UpdateBalance(gameRoundData.TotalWinnings);
     }
+
+    public void UpdateBalance(float value)
+    {
+        coinDropController.TriggerCoinDrop();
+        playerBankController.UpdateBalance(value);
+    }
+
 }

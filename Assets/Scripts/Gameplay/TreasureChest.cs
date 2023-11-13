@@ -1,21 +1,23 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TreasureChest : MonoBehaviour, IGameStateObserver
 {
     //FIXME: programmatically set spacing to work with common aspect ratios
-    public float moveTime = 0.2f;
-    public float postAnimationWaitTime = 1f;
-    public float preAnimationWaitTime = 0.5f;
-    public float animationDistanceFromCamera = 1.5f;
-    public float scaleMultiplier = 2f;
-    public bool modelZIsUp = true;
-    public bool modelOriginIsBottom = true;
-    private Reward reward;
+    public bool isOpen { get; private set; } = false;
+    public Reward reward { get; private set; }
+
+    [SerializeField] private float moveTime = 0.2f;
+    [SerializeField] private float postAnimationWaitTime = 1f;
+    [SerializeField] private float preAnimationWaitTime = 0.5f;
+    [SerializeField] private float animationDistanceFromCamera = 1.5f;
+    [SerializeField] private float scaleMultiplier = 2f;
+    [SerializeField] private bool modelZIsUp = true;
+    [SerializeField] private bool modelOriginIsBottom = true;
     private Animator animator;
     private Vector3 startPosition, startScale;
     private float verticalOffset;
-    public bool isOpen { get; private set; } = false;
 
     void Start()
     {
@@ -58,6 +60,11 @@ public class TreasureChest : MonoBehaviour, IGameStateObserver
     {
         StartCoroutine(AnimationCleanup());
         reward.SetVisible(true);
+    }
+
+    public void TriggerBlackHole(List<TreasureChest> openChests)
+    {
+        reward.TriggerBlackHole(openChests);
     }
 
     IEnumerator AnimationSetup()

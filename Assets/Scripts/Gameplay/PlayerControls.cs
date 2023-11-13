@@ -17,8 +17,7 @@ public class PlayerControls : MonoBehaviour
         {
             if (hit.collider.TryGetComponent(out chest))
             {
-
-                GameplayController.Instance.SelectChest(chest);
+                GameplayController.Instance.OpenChest(chest);
             }
         }
     }

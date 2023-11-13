@@ -50,6 +50,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationTime: 10
+  pullTime: 0.3
+  pullShakeTime: 0.2
   Gold: {fileID: 6983892375943819157}
   Silver: {fileID: 8849961597155001636}
   Copper: {fileID: 6419028936707174422}

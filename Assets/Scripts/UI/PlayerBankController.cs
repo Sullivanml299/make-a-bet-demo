@@ -6,6 +6,7 @@ public class PlayerBankController : MonoBehaviour
 {
     [SerializeField]
     private TextMeshProUGUI displayText;
+    //TODO: consider moving this to the GameRoundData class
     public float CurrentBalance { get; private set; } = 10;
 
     void Start()

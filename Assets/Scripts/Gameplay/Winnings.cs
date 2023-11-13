@@ -18,12 +18,6 @@ public static class Winnings
 
         // EvenSplit(numberOfIncrements, GameRoundData.numberOfChests - 1, gameRoundData.WinningsQueue);
         RandomSplit(numberOfIncrements, GameRoundData.numberOfChests - 1, gameRoundData.WinningsQueue);
-
-        for (var i = 0; i < 100; i++)
-        {
-            int numberOfChests = Random.Range(1, Mathf.Min(numberOfIncrements + 1, GameRoundData.numberOfChests));
-            GetRandomPartition(Random.Range(numberOfChests, numberOfChests + 1), numberOfChests);
-        }
     }
 
     static void RandomSplit(int numberOfIncrements, int chestsAvailable, Queue<float> winningsQueue)
@@ -88,6 +82,8 @@ public static class Winnings
     }
 
     //TODO: Come back to this. Average time is far more efficient, but worst case could technically be infinite
+    //Worst case is when t is very big and n = t
+
     // static int[] GetRandomPartition(int T, int n)
     // {
     //     if (n == 1) return new int[] { T };

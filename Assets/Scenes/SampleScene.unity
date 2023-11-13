@@ -222,7 +222,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.8}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &79792563
@@ -272,14 +272,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18.35
+  m_fontSize: 18
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 8
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -308,7 +308,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 27.596275, y: 0, z: 86.04531, w: 0}
+  m_margin: {x: 27.596275, y: 0, z: 122.684425, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2115,7 +2115,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &1078373609
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2281,7 +2281,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 72, y: 62.80005}
+  m_AnchoredPosition: {x: 72, y: 67.5}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1131984133
@@ -2405,7 +2405,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1170404333}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -2817,7 +2817,7 @@ PrefabInstance:
     - target: {fileID: 633774887749192833, guid: aad60a58e660c76459f332426b49c255, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 4300000, guid: 5c509bc9e3ce92e418aac359ebdf4281, type: 3}
+      objectReference: {fileID: 4300000, guid: 4b1205a7235860c479fc94aefe26ebf1, type: 3}
     - target: {fileID: 1103581519790838394, guid: aad60a58e660c76459f332426b49c255, type: 3}
       propertyPath: m_Name
       value: TreasureChest (4)
@@ -3040,7 +3040,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24.75
+  m_fontSize: 34.4
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3076,7 +3076,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 120.84249, y: 0, z: 16.951569, w: 0}
+  m_margin: {x: 96.52329, y: 0, z: 16.951569, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -3382,6 +3382,7 @@ MonoBehaviour:
   playerBankController: {fileID: 880927736}
   denominationController: {fileID: 1446512578}
   playButton: {fileID: 1131984136}
+  coinDropController: {fileID: 1740983632}
 --- !u!4 &1701539697
 Transform:
   m_ObjectHideFlags: 0
@@ -3453,13 +3454,14 @@ GameObject:
   - component: {fileID: 1740983631}
   - component: {fileID: 1740983630}
   - component: {fileID: 1740983629}
+  - component: {fileID: 1740983632}
   m_Layer: 0
-  m_Name: CoinDropVFX
+  m_Name: VFX-CoinDrop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!73398921 &1740983629
 VFXRenderer:
   serializedVersion: 1
@@ -3468,7 +3470,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1740983628}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -3556,6 +3558,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1740983632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1740983628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c0167616e986934c955d222d9ebdc36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinDropVFX: {fileID: 1740983630}
 --- !u!1001 &1845499769
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3661,7 +3676,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 66, y: 23.800049}
+  m_AnchoredPosition: {x: 66, y: 27.6}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2105392435
@@ -3752,9 +3767,9 @@ SceneRoots:
   - {fileID: 738900460}
   - {fileID: 1723614259}
   - {fileID: 1701539697}
+  - {fileID: 1740983631}
+  - {fileID: 463797427}
   - {fileID: 1093099582}
   - {fileID: 528351101}
   - {fileID: 1078373612}
-  - {fileID: 1740983631}
-  - {fileID: 463797427}
   - {fileID: 1379214040}

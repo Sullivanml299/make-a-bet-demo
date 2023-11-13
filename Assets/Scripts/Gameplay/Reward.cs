@@ -1,27 +1,35 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class Reward : MonoBehaviour
 {
-    //FIXME: rework how I set the reward type
-    public float rotationTime = 10f;
-    public GameObject Gold, Silver, Copper, Pooper;
     public RewardType rewardType { get; private set; }
-    [SerializeField]
-    private TextMeshPro rewardText;
+
+    [SerializeField] private float rotationTime = 10f;
+    [SerializeField] private float pullTime = 0.3f;
+    [SerializeField] private float initialPullWaitTime = 0.2f;
+    [SerializeField] private float betweenPullWaitTime = 0.1f;
+
+    [SerializeField] private GameObject Gold, Silver, Copper, Pooper;
+    [SerializeField] private TextMeshPro rewardText;
     private GameObject currentReward;
     private float rewardValue;
     private bool visible = false;
     private float rotationSpeed => 360 / rotationTime;
+    private Vector3 startPosition, startScale;
 
+    void Awake()
+    {
+        SetVisible(false);
+    }
 
     void Update()
     {
         if (visible)
         {
-            //FIXME: this rotates the text too
-            transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
+            currentReward.transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
         }
     }
 
@@ -43,8 +51,18 @@ public class Reward : MonoBehaviour
             currentReward.SetActive(visible);
             rewardText.gameObject.SetActive(visible);
         }
-        if (!visible) transform.rotation = Quaternion.identity;
     }
+
+    public void TriggerBlackHole(List<TreasureChest> openChests)
+    {
+        StartCoroutine(BlackHolePull(openChests));
+    }
+
+    // public void StartPull(Vector3 blackHolePosition, int WaitTimeMultiplier)
+    // {
+    //     StartCoroutine(BlackHolePull(blackHolePosition, WaitTimeMultiplier));
+    // }
+
 
     private void SetRewardType(RewardType type)
     {
@@ -66,6 +84,78 @@ public class Reward : MonoBehaviour
                 break;
         }
     }
+
+    private IEnumerator BlackHolePull(List<TreasureChest> openChests)
+    {
+        float time = 0f;
+
+        while (time < initialPullWaitTime)
+        {
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        GameObject currentReward;
+        foreach (TreasureChest chest in openChests)
+        {
+            currentReward = chest.reward.currentReward;
+            startPosition = currentReward.transform.position;
+            startScale = currentReward.transform.localScale;
+
+
+            while (time < betweenPullWaitTime)
+            {
+                time += Time.deltaTime;
+                yield return null;
+            }
+
+            time = 0f;
+
+            while (time < pullTime)
+            {
+                time += Time.deltaTime;
+                currentReward.transform.position = Vector3.Lerp(startPosition, Pooper.transform.position, time / pullTime);
+                currentReward.transform.localScale = Vector3.Lerp(startScale, Vector3.zero, time / pullTime);
+                yield return null;
+            }
+
+            chest.reward.SetVisible(false);
+            currentReward.transform.position = startPosition;
+            currentReward.transform.localScale = startScale;
+            GameplayController.Instance.UpdateBalance(chest.reward.rewardValue);
+        }
+
+        GameStateManager.Instance.ChangeGameState(GameState.Setup);
+    }
+
+    // private IEnumerator BlackHolePull(Vector3 blackHolePosition, float WaitTimeMultiplier = 1f)
+    // {
+    //     startPosition = currentReward.transform.position;
+    //     startScale = currentReward.transform.localScale;
+
+    //     float time = 0f;
+    //     float totalWaitTime = pullWaitTime + pullWaitTime * WaitTimeMultiplier;
+
+    //     while (time < totalWaitTime)
+    //     {
+    //         time += Time.deltaTime;
+    //         yield return null;
+    //     }
+
+    //     time = 0f;
+
+    //     while (time < pullTime)
+    //     {
+    //         time += Time.deltaTime;
+    //         currentReward.transform.position = Vector3.Lerp(startPosition, blackHolePosition, time / pullTime);
+    //         currentReward.transform.localScale = Vector3.Lerp(startScale, Vector3.zero, time / pullTime);
+    //         yield return null;
+    //     }
+
+    //     SetVisible(false);
+    //     currentReward.transform.position = startPosition;
+    //     currentReward.transform.localScale = startScale;
+    // }
 }
 
 public enum RewardType
