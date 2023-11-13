@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class TreasureChest : MonoBehaviour, IGameStateObserver
 {
-    //FIXME: programmatically set spacing to work with common aspect ratios
     public bool isOpen { get; private set; } = false;
     public Reward reward { get; private set; }
 

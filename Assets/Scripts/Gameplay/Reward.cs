@@ -11,7 +11,6 @@ public class Reward : MonoBehaviour
     [SerializeField] private float pullTime = 0.3f;
     [SerializeField] private float initialPullWaitTime = 0.2f;
     [SerializeField] private float betweenPullWaitTime = 0.1f;
-
     [SerializeField] private GameObject Gold, Silver, Copper, Pooper;
     [SerializeField] private TextMeshPro rewardText;
     private GameObject currentReward;
@@ -27,7 +26,7 @@ public class Reward : MonoBehaviour
 
     void Update()
     {
-        if (visible)
+        if (visible && currentReward != Pooper)
         {
             currentReward.transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
         }
@@ -57,12 +56,6 @@ public class Reward : MonoBehaviour
     {
         StartCoroutine(BlackHolePull(openChests));
     }
-
-    // public void StartPull(Vector3 blackHolePosition, int WaitTimeMultiplier)
-    // {
-    //     StartCoroutine(BlackHolePull(blackHolePosition, WaitTimeMultiplier));
-    // }
-
 
     private void SetRewardType(RewardType type)
     {
@@ -127,35 +120,6 @@ public class Reward : MonoBehaviour
 
         GameStateManager.Instance.ChangeGameState(GameState.Setup);
     }
-
-    // private IEnumerator BlackHolePull(Vector3 blackHolePosition, float WaitTimeMultiplier = 1f)
-    // {
-    //     startPosition = currentReward.transform.position;
-    //     startScale = currentReward.transform.localScale;
-
-    //     float time = 0f;
-    //     float totalWaitTime = pullWaitTime + pullWaitTime * WaitTimeMultiplier;
-
-    //     while (time < totalWaitTime)
-    //     {
-    //         time += Time.deltaTime;
-    //         yield return null;
-    //     }
-
-    //     time = 0f;
-
-    //     while (time < pullTime)
-    //     {
-    //         time += Time.deltaTime;
-    //         currentReward.transform.position = Vector3.Lerp(startPosition, blackHolePosition, time / pullTime);
-    //         currentReward.transform.localScale = Vector3.Lerp(startScale, Vector3.zero, time / pullTime);
-    //         yield return null;
-    //     }
-
-    //     SetVisible(false);
-    //     currentReward.transform.position = startPosition;
-    //     currentReward.transform.localScale = startScale;
-    // }
 }
 
 public enum RewardType

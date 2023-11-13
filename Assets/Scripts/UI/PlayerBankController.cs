@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class PlayerBankController : MonoBehaviour
 {
-    [SerializeField]
-    private TextMeshProUGUI displayText;
-    //TODO: consider moving this to the GameRoundData class
-    public float CurrentBalance { get; private set; } = 10;
+    [SerializeField] private TextMeshProUGUI displayText;
+    public float CurrentBalance { get; private set; } = 10; //TODO: consider moving this to it's own data class
 
     void Start()
     {
@@ -19,7 +17,5 @@ public class PlayerBankController : MonoBehaviour
         CurrentBalance += amount;
         displayText.text = CurrentBalance.ToString("C2");
     }
-
-    //TODO: Add animation for filling the bank when the player wins
 
 }

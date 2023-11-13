@@ -46,7 +46,6 @@ public static class Winnings
             Debug.LogWarning("Number of partitions is greater than total value. Setting number of partitions to total value.");
         }
 
-        Debug.Log($"Random ascending partition of {T} into {n}");
         List<int> numbers = Enumerable.Range(1, T - 1).ToList();
         System.Random random = new System.Random();
 
@@ -135,8 +134,6 @@ public static class Winnings
 
     }
 
-
-
     static int LargestIntegerDivisorInRange(int numerator, int lowerLimit, int upperLimit)
     {
         Assert.IsTrue(lowerLimit <= upperLimit, "Lower limit must be less than or equal to upper limit");
@@ -152,6 +149,5 @@ public static class Winnings
 
         throw new System.ArgumentException("No divisor found in the given range");
     }
-
 
 }

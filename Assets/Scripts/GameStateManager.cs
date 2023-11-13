@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -35,8 +34,6 @@ public class GameStateManager : MonoBehaviour
     {
         foreach (IGameStateObserver observer in observers) observer.OnGameStateChange(gameState);
     }
-
-
 }
 
 public enum GameState

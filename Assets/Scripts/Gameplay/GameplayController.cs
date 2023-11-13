@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.VFX;
 
 public class GameplayController : MonoBehaviour, IGameStateObserver
 {
@@ -48,6 +47,12 @@ public class GameplayController : MonoBehaviour, IGameStateObserver
         playButton.SetInteractable(amount <= playerBankController.CurrentBalance);
     }
 
+    public void UpdateBalance(float value)
+    {
+        if (value > 0) coinDropController.TriggerCoinDrop();
+        playerBankController.UpdateBalance(value);
+    }
+
     public void OpenChest(TreasureChest chest)
     {
         if (!canSelectChest || chest.isOpen) return;
@@ -92,7 +97,7 @@ public class GameplayController : MonoBehaviour, IGameStateObserver
         lastGameWinController.Reset();
         openChests.Clear();
 
-        playerBankController.UpdateBalance(-gameRoundData.BetAmount);
+        UpdateBalance(-gameRoundData.BetAmount);
         gameRoundData.RoundMultiplier = Multiplier.GetRandomMultplier();
         gameRoundData.TotalWinnings = gameRoundData.RoundMultiplier * gameRoundData.BetAmount;
         Winnings.SplitWinnings(gameRoundData);
@@ -102,13 +107,6 @@ public class GameplayController : MonoBehaviour, IGameStateObserver
     private void EndRound()
     {
         blackHoleChest.TriggerBlackHole(openChests);
-        // playerBankController.UpdateBalance(gameRoundData.TotalWinnings);
-    }
-
-    public void UpdateBalance(float value)
-    {
-        coinDropController.TriggerCoinDrop();
-        playerBankController.UpdateBalance(value);
     }
 
 }

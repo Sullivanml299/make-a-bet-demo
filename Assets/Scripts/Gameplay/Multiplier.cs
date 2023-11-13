@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -12,14 +11,15 @@ public static class Multiplier
         new WeightedOption { MultiplierArray = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, Weight = 30 },
         new WeightedOption { MultiplierArray =new int[] {12, 16, 24, 32, 48, 64}, Weight = 15 },
         new WeightedOption { MultiplierArray = new int[]{100, 200, 300, 400, 500}, Weight = 5 }
-    };
+    }.OrderByDescending(x => x.Weight).ToList();
     private static int totalWeight = multipliers.Sum(m => m.Weight);
 
 
+    //TODO: This should be unit tested. 
     public static int GetRandomMultplier()
     {
-        Assert.IsTrue(totalWeight == 100, "Total weight of multipliers must be 100"); //TODO: Only needs to check once
-        int randomNumber = Random.Range(0, totalWeight);
+        Assert.IsTrue(totalWeight == 100, "Total weight of multipliers must be 100");
+        int randomNumber = Random.Range(1, totalWeight + 1);
 
         foreach (var multiplier in multipliers)
         {
