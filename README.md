@@ -1,5 +1,5 @@
-# Make a Bet!
-This is a small project designed to prototype a betting inteface that could be used as a in a game that impements gambling mechanics. The coin and chest models were free assets from the Unity asset store. All shaders (e.g., the coin drop and black hole shader) were made by me using shadergraph. Animations were made by me using either Unity's built-in animator or coroutines. 
+# Betting Mini-Game!
+This is a small project designed to prototype a betting inteface that could be used in a game that impements mini-game/gambling mechanics. The coin and chest models were free assets from the Unity asset store. All shaders (e.g., the coin drop and black hole shader) were made using shadergraph. Animations were made using either Unity's built-in animator or by udating transforms using coroutines. 
 
 
 
